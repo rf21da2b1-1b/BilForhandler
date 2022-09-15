@@ -52,5 +52,16 @@ namespace BilForhandlerRest.Managers
             }
             return updateBil;
         }
+
+
+        /*
+         * Alternativ update
+         */
+        public Bil Update2(string stelnummer, Bil bil)
+        {
+            int index = _biler.FindIndex(b => b.StelNummer==stelnummer);
+            _biler[index] = bil;
+            return _biler[index];
+        }
     }
 }
