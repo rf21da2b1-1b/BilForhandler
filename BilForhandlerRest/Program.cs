@@ -7,7 +7,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowAll", builder =>
+                 builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
+    );
+    options.AddPolicy(
+        "OnlyGetDelete", builder =>
+                 builder.WithOrigins().AllowAnyHeader().WithMethods("Get","Delete")
+    );
+
+}
+);
+
 var app = builder.Build();
+
+
+
+/*
+ * Hvilke services man bruger
+ */
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -16,7 +36,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+
+
 app.UseAuthorization();
+
+app.UseCors("OnlyGetDelete");
 
 app.MapControllers();
 

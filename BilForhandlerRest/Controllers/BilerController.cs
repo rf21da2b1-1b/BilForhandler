@@ -1,5 +1,6 @@
 ﻿using BilForhandlerRest.Managers;
 using BilModelLib.model;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -43,6 +44,7 @@ namespace BilForhandlerRest.Controllers
 
         // DELETE api/<BilerController>/5
         [HttpDelete("{stelnummer}")]
+        //[EnableCors("OnlyGetDelete")]
         public Bil Delete(string stelnummer)
         {
             return mgr.Delete(stelnummer);
