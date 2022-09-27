@@ -12,6 +12,9 @@ namespace BilForhandlerRest.Managers
 
         // find bil fra stelnummer
         Bil Get(String stelnummer);
+        List<Bil> GetModel(String model);
+
+        
 
 
     }

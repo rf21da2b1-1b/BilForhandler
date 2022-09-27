@@ -21,29 +21,54 @@ namespace BilForhandlerRest.Controllers
             return mgr.Get();
         }
 
+        
+
         // GET api/<BilerController>/5
-        [HttpGet("{stelnummer}")]
-        public Bil Get(String stelnummer)
+        [HttpGet] // metode
+        [Route("{stelnummer}")] // URI
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get(String stelnummer)
         {
-            return mgr.Get(stelnummer);
+            try
+            {
+                Bil bil = mgr.Get(stelnummer);
+                return Ok(bil);
+            }
+            catch(KeyNotFoundException knfe)
+            {
+                return NotFound(knfe.Message);
+            }
         }
+
+        [HttpGet] // metode
+        [Route("Model/{model}")] // URI
+        public List<Bil> GetModel(String model)
+        {
+            return mgr.GetModel(model);
+        }
+
+
 
         // POST api/<BilerController>
         [HttpPost]
+        [Route("{stelnummer}")]
         public Bil Post([FromBody] Bil bil)
         {
             return mgr.Create(bil);
         }
 
         // PUT api/<BilerController>/5
-        [HttpPut("{stelnummer}")]
+        [HttpPut]
+        [Route("{stelnummer}")]
         public Bil Put(string stelnummer, [FromBody] Bil bil)
         {
             return mgr.Update(stelnummer, bil);
         }
 
         // DELETE api/<BilerController>/5
-        [HttpDelete("{stelnummer}")]
+        [HttpDelete]
+        [Route("{stelnummer}")]
         //[EnableCors("OnlyGetDelete")]
         public Bil Delete(string stelnummer)
         {
