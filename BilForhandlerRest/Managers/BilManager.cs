@@ -20,6 +20,9 @@ namespace BilForhandlerRest.Managers
 
         public Bil Create(Bil bil)
         {
+            if (_biler.Exists(b => b.StelNummer == bil.StelNummer))
+                throw new ArgumentException("Stelnummer findes allerede");
+
             _biler.Add(bil);
             return bil;
         }
@@ -41,13 +44,7 @@ namespace BilForhandlerRest.Managers
         {
             return _biler.FindAll(b => b.Model.Contains(model));
         }
-
-
-
-
-
-
-        
+                
         public Bil Get(string stelnummer)
         {
             if (!_biler.Exists(b => b.StelNummer == stelnummer))

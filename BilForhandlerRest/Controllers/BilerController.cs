@@ -16,9 +16,12 @@ namespace BilForhandlerRest.Controllers
 
         // GET: api/<BilerController>
         [HttpGet]
-        public IEnumerable<Bil> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Get()
         {
-            return mgr.Get();
+            List<Bil> liste = mgr.Get();
+            return (liste.Count == 0)?NoContent():Ok(liste);
         }
 
         
@@ -43,36 +46,69 @@ namespace BilForhandlerRest.Controllers
 
         [HttpGet] // metode
         [Route("Model/{model}")] // URI
-        public List<Bil> GetModel(String model)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetModel(String model)
         {
-            return mgr.GetModel(model);
+            List<Bil> biler = mgr.GetModel(model);
+
+            return (biler.Count > 0)?Ok(biler):NoContent();   
         }
 
-
-
+        
         // POST api/<BilerController>
         [HttpPost]
-        [Route("{stelnummer}")]
-        public Bil Post([FromBody] Bil bil)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]   
+        public IActionResult Post([FromBody] Bil bil)
         {
-            return mgr.Create(bil);
+            try
+            {
+                Bil nyBil = mgr.Create(bil);
+                String uri = "api/Biler/" + bil.StelNummer;
+                return Created(uri, bil);
+            }
+            catch(ArgumentException ae)
+            {
+                return Conflict(ae.Message);
+            }
+
         }
 
         // PUT api/<BilerController>/5
         [HttpPut]
         [Route("{stelnummer}")]
-        public Bil Put(string stelnummer, [FromBody] Bil bil)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Put(string stelnummer, [FromBody] Bil bil)
         {
-            return mgr.Update(stelnummer, bil);
+            try
+            {
+                return Ok(mgr.Update(stelnummer, bil));
+            }
+            catch(KeyNotFoundException knfe)
+            {
+                return NotFound(knfe.Message);
+            }
+
         }
 
         // DELETE api/<BilerController>/5
         [HttpDelete]
         [Route("{stelnummer}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         //[EnableCors("OnlyGetDelete")]
-        public Bil Delete(string stelnummer)
+        public IActionResult Delete(string stelnummer)
         {
-            return mgr.Delete(stelnummer);
+            try
+            {
+                return Ok(mgr.Delete(stelnummer));
+            }
+            catch (KeyNotFoundException knfe)
+            {
+                return NotFound(knfe.Message);
+            }
         }
     }
 }
