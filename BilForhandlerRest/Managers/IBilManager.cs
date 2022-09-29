@@ -12,7 +12,10 @@ namespace BilForhandlerRest.Managers
 
         // find bil fra stelnummer
         Bil Get(String stelnummer);
+        // find biler fra model
         List<Bil> GetModel(String model);
+        // finde biler fra et interval af år
+        List<Bil> SearchYear(int? lowYear, int? highYear);
 
         
 

@@ -53,6 +53,16 @@ namespace BilForhandlerRest.Managers
             return _biler.Find(b => b.StelNummer == stelnummer);
         }
 
+        public List<Bil> SearchYear(int? lowYear, int? highYear)
+        {
+
+            // finder alle biler efter low year
+            List<Bil> bilerTemp = (lowYear is null) ? _biler : _biler.Where(b => b.Aar >= lowYear).ToList();
+
+            // finder alle biler før high year
+            return (highYear is null)?bilerTemp: bilerTemp.Where(b => b.Aar <= highYear).ToList();
+        }
+
         public Bil Update(string stelnummer, Bil bil)
         {
             Bil updateBil = Get(stelnummer);
@@ -78,8 +88,6 @@ namespace BilForhandlerRest.Managers
             _biler[index] = bil;
             return _biler[index];
         }
-
-
 
         
     }

@@ -55,7 +55,17 @@ namespace BilForhandlerRest.Controllers
             return (biler.Count > 0)?Ok(biler):NoContent();   
         }
 
-        
+
+        [HttpGet]
+        [Route("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Get([FromQuery] BilYearFilter filter)
+        {
+            List<Bil> liste = mgr.SearchYear(filter.StartYear, filter.EndYear);
+            return (liste.Count == 0) ? NoContent() : Ok(liste);
+        }
+
         // POST api/<BilerController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
