@@ -63,6 +63,34 @@ namespace BilForhandlerRest.Managers
             return (highYear is null)?bilerTemp: bilerTemp.Where(b => b.Aar <= highYear).ToList();
         }
 
+        public List<Bil> Get(int fromPage, int toPage, out int actualTo, out int total)
+        {
+            // sætter antal i listen
+            total = _biler.Count;
+
+            // tjekker at fra index ikke er større end antal i listen
+            if (fromPage > total - 1)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            // sætter til index til laveste af toPage og total
+            // fx toPage = 50  og  total = 45
+            // så bliver actualTo = 45 - 1 = 44 (vi starter fra 0)
+            actualTo = (toPage < total)? toPage : total-1;
+
+            // laver en ny liste
+            List<Bil> returnList = new List<Bil>();
+            // fylder listen med de 'rigtige' værdier
+            for (int i = fromPage; i <= actualTo; i++)
+            {
+                returnList.Add(_biler[i]);
+            }
+
+            return returnList;
+        }
+
+
         public Bil Update(string stelnummer, Bil bil)
         {
             Bil updateBil = Get(stelnummer);

@@ -38,7 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Biler API v1.0");
-        c.RoutePrefix = "help";
+        c.RoutePrefix = "api/help";
     });
 
 }

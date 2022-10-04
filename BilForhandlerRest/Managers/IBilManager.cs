@@ -16,6 +16,7 @@ namespace BilForhandlerRest.Managers
         List<Bil> GetModel(String model);
         // finde biler fra et interval af år
         List<Bil> SearchYear(int? lowYear, int? highYear);
+        List<Bil> Get(int fromPage, int toPage, out int actualTo, out int total);
 
         
 

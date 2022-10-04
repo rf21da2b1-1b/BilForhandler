@@ -14,9 +14,9 @@ namespace BilModelLib.model
         public int Aar { get; set; }
         public String Maerke { get; set; }
         public String Braendsel { get; set; }
-       
+
 
         // evt konstruktør + ToString
-
+     
     }
 }

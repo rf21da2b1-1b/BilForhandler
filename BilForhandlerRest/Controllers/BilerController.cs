@@ -18,10 +18,47 @@ namespace BilForhandlerRest.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Get()
         {
-            List<Bil> liste = mgr.Get();
-            return (liste.Count == 0)?NoContent():Ok(liste);
+            // læser header field - hvis der er nogen
+            String rangeValue = Request.Headers["Range"];
+
+            if (rangeValue is null) // der er ingen header field
+            { 
+                /*
+                 * Helt alm Get all request uden paging
+                 */
+
+                List<Bil> normalList = mgr.Get();
+                return (normalList.Count == 0) ? NoContent() : Ok(normalList);
+            }
+
+            /*
+             * Der bliver benyttet paging
+             */
+
+            // finder fra og til sider (ud fra xxx-yyyy)
+            // kunne lave fejl tjek med regex - det bliver en anden gang
+            try
+            {
+                String[] values = rangeValue.Split('-');
+                int lowIx = int.Parse(values[0]);
+                int highIx = int.Parse(values[1]);
+
+                int actualHigh;
+                int noInList;
+                List<Bil> liste = mgr.Get(lowIx, highIx, out actualHigh, out noInList);
+
+                // sætter retur header field
+                String rangeReturnValue = $"{lowIx}-{actualHigh}/{noInList}";
+                Response.Headers.Add("Content-Range", rangeReturnValue);
+                return (liste.Count == 0) ? NoContent() : Ok(liste);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         
@@ -60,7 +97,7 @@ namespace BilForhandlerRest.Controllers
         [Route("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Get([FromQuery] BilYearFilter filter)
+        public IActionResult Get([FromQuery] BilYearFilter filter) // virker også med BilYearFilterRecord
         {
             List<Bil> liste = mgr.SearchYear(filter.StartYear, filter.EndYear);
             return (liste.Count == 0) ? NoContent() : Ok(liste);

@@ -18,5 +18,5 @@ namespace BilModelLib.model
      * Som record - glem det
      */
 
-    public record BilYearFilterRecord ( int StartYear, int EndYear);
+    public record BilYearFilterRecord ( int? StartYear, int? EndYear);
 }

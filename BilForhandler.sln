@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BilForhandlerRest", "BilFor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BilModelLib", "BilModelLib\BilModelLib.csproj", "{DA968283-51BC-4B5D-84C8-D419C7E56148}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BilForhandlerRestTests", "BilForhandlerRestTests\BilForhandlerRestTests.csproj", "{7F0FFA83-9135-48BC-883E-D4334594FBBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BilForhandlerRestTests", "BilForhandlerRestTests\BilForhandlerRestTests.csproj", "{7F0FFA83-9135-48BC-883E-D4334594FBBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
