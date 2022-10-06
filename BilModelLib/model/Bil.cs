@@ -17,6 +17,10 @@ namespace BilModelLib.model
 
 
         // evt konstruktør + ToString
-     
+
+        public override string ToString()
+        {
+            return $"Model={Model}, StelNummer={StelNummer}, Km={Km}, Aar={Aar}, Maerke={Maerke}, Braendsel={Braendsel}";
+        }
     }
 }
